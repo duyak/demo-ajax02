@@ -18,6 +18,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#comboboxCountry').on('change', function () {
+                $('#comboboxCity option').remove();
                 var countryId = $('#comboboxCountry option:selected').val();
                 $.ajax({
                     type: 'GET',
@@ -35,6 +36,25 @@
                 });
 
             });
+            $('#comboboxState').on('change', function () {
+                var stateId = $('#comboboxState option:selected').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '${pageContext.request.contextPath }/demo/loadCities/' + stateId + '.html',
+                    success: function (result) {
+                        var result = JSON.parse(result);
+                        var s = '';
+                        for (var i = 0; i < result.length; i++) {
+                            s += '<option value="' + result[i].id + '">' + result[i].name + '</option>'
+                        }
+                        $('#comboboxCity').html(s);
+
+
+                    }
+                });
+
+            });
+
 
         });
     </script>
@@ -42,27 +62,36 @@
 <body>
 <h1>Thanh Cong</h1>
 <form class="form-group" action="" method="post">
-    <table class="table">
-        <h2 class="center">Country</h2>
-        <td>
-            <div class="input-group mb-3">
-                <select class="custom-select" id="comboboxCountry">
-                    <c:forEach var="country" items="${countries}">
-                        <option value="${country.id}">${country.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </td>
-        <br>
-        <h2 class="center">State</h2>
-        <td>
-            <div class="input-group mb-3">
-                <select class="custom-select" id="comboboxState">
 
-                </select>
-            </div>
-        </td>
-    </table>
+    <h2>Country</h2>
+
+    <div class="input-group mb-3">
+        <select class="custom-select" id="comboboxCountry">
+            <option value="-1">Select a country</option>
+            <c:forEach var="country" items="${countries}">
+                <option value="${country.id}">${country.name}</option>
+            </c:forEach>
+        </select>
+    </div>
+
+    <br>
+    <h2>State</h2>
+
+    <div class="input-group mb-3">
+        <select class="custom-select" id="comboboxState">
+
+        </select>
+    </div>
+    <br>
+    <h2>City</h2>
+
+    <div class="input-group mb-3">
+        <select class="custom-select" id="comboboxCity">
+
+        </select>
+    </div>
+
+
 </form>
 </body>
 </html>
