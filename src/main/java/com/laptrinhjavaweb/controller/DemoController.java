@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.controller;
 
+import com.laptrinhjavaweb.server.CityServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,23 +17,36 @@ import com.laptrinhjavaweb.server.StateServer;
 @RequestMapping("/demo")
 public class DemoController {
 
-	@Autowired
-	private CountryServer countryServer;
-	
-	@Autowired StateServer stateServer; 
+    @Autowired
+    private CountryServer countryServer;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String index(ModelMap modelMap) {
-		modelMap.put("countries", countryServer.findAll());
-		return "demo/index";
-	}
+    @Autowired
+    private StateServer stateServer;
 
-	@RequestMapping(value = "loadStates/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public String loadStates(@PathVariable("id") int id) {
-		Gson gson = new Gson();
-		return gson.toJson(stateServer.findByCountry(id));
+    @Autowired
+    private CityServer cityServer;
 
-	}
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String index(ModelMap modelMap) {
+        modelMap.put("countries", countryServer.findAll());
+        return "demo/index";
+    }
+
+    @RequestMapping(value = "loadStates/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String loadStates(@PathVariable("id") int id) {
+        Gson gson = new Gson();
+        return gson.toJson(stateServer.findByCountry(id));
+
+    }
+
+    @RequestMapping(value = "loadCities/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String loadCities(@PathVariable("id") int id) {
+        Gson gson = new Gson();
+        return gson.toJson(cityServer.findByState(id));
+
+    }
 
 }
