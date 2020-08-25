@@ -41,6 +41,7 @@ public class DemoController {
 
     }
 
+
     @RequestMapping(value = "loadCities/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String loadCities(@PathVariable("id") int id) {
